@@ -1,0 +1,44 @@
+<html>
+<head>
+<title>Swedish Chef Test</title>
+<script type="text/javascript" src="borkborkbork.js"></script>
+<script type="text/javascript" src="translator.js"></script>
+</head>
+<body bgcolor="white" text="black">
+<center><h1>Swedish Chef Test</h1></center>
+<script type="text/javascript">
+function run_tests(language){
+	var pairs=[
+	  ['can', 'cun'],
+	  ['value', 'felooe-a'],
+	  ['you', 'yuoo'],
+    ['tion', 'teeun'],
+    ['ztion', 'zshun'],
+	  ['Returns', 'Retoorns'],
+	  ['Welcome.', 'Velcume-a. Bork Bork Bork!'],
+	  ['Swedish Chef Test', 'Svedeesh Cheff Test'],
+	  ['Returns an object literal representing the specified object; you can use this value to create a new object. Overrides the Object.prototype.toSource method.',
+        'Retoorns un oobject leeterel representeeng zee speceeffied oobject; yuoo cun use-a thees felooe-a tu creete-a a noo oobject. Ooferreedes zee Oobject.prututype-a.tuSuoorce-a methud. Bork Bork Bork!'],
+	  ['bork', 'bork']
+	];
+
+  var translator = Translate.compile_translator(language);
+	var result='';
+	for(var i = 0; i < pairs.length; i++)
+	{
+	  output = translator.translate(pairs[i][0]);
+	  expected = pairs[i][1];
+	  color = (output === expected) ? 'lightgreen' : 'pink';
+	  result += '<tr style="background-color:' + color + '" ><td>' + pairs[i][0] + '</td><td>' + output + '</td><td>' + pairs[i][1] + '</td></tr>';
+	}
+	return result;
+}
+</script>
+<div id='test-results'>
+    <table>
+	  <tr><td>Input</td><td>Result</td><td>Expected</td></tr>
+	  <script>document.write(run_tests(borkborkbork));</script>
+	</table>
+</div>
+</body>
+</html>
