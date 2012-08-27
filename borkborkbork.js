@@ -22,8 +22,6 @@ var borkborkbork = {
     { regex:'w', output:'v', states: ['INW', 'NIW'], nextState:'INW'},
     { regex:'bork\\b', output:'bork', states: [ 'NIW' ]},
     { regex:'([.!?])$', output:'$0 Bork Bork Bork!', states: ['INW', 'INW_I', 'NIW'], nextState:'NIW'},
-    //{ regex:'[!]$', output:'! Bork Bork Bork!', states: ['INW', 'INW_I', 'NIW'], nextState:'NIW'},
-    //{ regex:'[?]$', output:'? Bork Bork Bork!', states: ['INW', 'INW_I', 'NIW'], nextState:'NIW'},
     { regex:'\\w', states: ['INW', 'INW_I', 'NIW'], nextState:'INW'},
     { regex:'\\W', states: ['INW', 'INW_I', 'NIW'], nextState:'NIW'}
   ]
