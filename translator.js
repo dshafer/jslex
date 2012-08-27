@@ -35,13 +35,27 @@ Translator.prototype.translate = function(input){
   var capitalize = function(s){
     return s.charAt(0).toUpperCase() + s.slice(1);
   }
+  var ruleResult = function(rule, input){
+    var m = input.match(rule.regex);
+    if(m === null){
+      return { success: false};
+    } else {
+      return {
+        success: true,
+        numCharactersConsumed: m[0].length,
+        output: (rule.replacement !== null) ? rule.replacement.replace('$0', m[1]) : m[0],
+        nextState: rule.nextState
+      };
+    }
+  }
+  
   var output = '';
   var tok;
   var state = this[this.init_state];
   while(input.length > 0){
     var capitalized = /^[A-Z]/.test(input);
     for(var i = 0; i < state.length; i++){
-      var r = this.ruleResult(state[i], input);
+      var r = ruleResult(state[i], input);
       if(r.success){
         input = input.substring(r.numCharactersConsumed);
         output += capitalized ? capitalize(r.output) : r.output;
@@ -53,18 +67,4 @@ Translator.prototype.translate = function(input){
     }
   }
   return output;
-}
-
-Translator.prototype.ruleResult = function(rule, input){
-  var m = input.match(rule.regex);
-  if(m === null){
-    return { success: false};
-  } else {
-    return {
-      success: true,
-      numCharactersConsumed: m[0].length,
-      output: (rule.replacement !== null) ? rule.replacement.replace('$0', m[1]) : m[0],
-      nextState: rule.nextState
-    };
-  }
 }
