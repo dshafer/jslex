@@ -19,7 +19,7 @@ var Translate = {};
   
   Translate.compile_rule = function(rule){
     var toRet = {};
-    toRet.regex = new RegExp('^' + rule.regex);
+    toRet.regex = new RegExp('^' + rule.regex, 'i');
     toRet.replacement = (typeof(rule.output) == 'undefined') ? null : rule.output;
     toRet.nextState = (typeof(rule.nextState) == 'undefined') ? null : rule.nextState;
     return toRet;
@@ -32,16 +32,19 @@ var Translator = function(){
 }
 
 Translator.prototype.translate = function(input){
-  
+  var capitalize = function(s){
+    return s.charAt(0).toUpperCase() + s.slice(1);
+  }
   var output = '';
   var tok;
   var state = this[this.init_state];
   while(input.length > 0){
+    var capitalized = /^[A-Z]/.test(input);
     for(var i = 0; i < state.length; i++){
       var r = this.ruleResult(state[i], input);
       if(r.success){
         input = input.substring(r.numCharactersConsumed);
-        output += r.output;
+        output += capitalized ? capitalize(r.output) : r.output;
         if(r.nextState !== null){
           state = this[r.nextState];
         }
@@ -60,7 +63,7 @@ Translator.prototype.ruleResult = function(rule, input){
     return {
       success: true,
       numCharactersConsumed: m[0].length,
-      output: (rule.replacement !== null) ? rule.replacement : m[0],
+      output: (rule.replacement !== null) ? rule.replacement.replace('$0', m[1]) : m[0],
       nextState: rule.nextState
     };
   }
